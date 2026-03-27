@@ -1,275 +1,649 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CenoCup - Champions Legends v35.0</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;700&family=Orbitron:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CENOCUP</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a1628;--navy-mid:#0e1f3d;--navy-light:#162a52;
+  --blue:#1a3a6b;--blue-mid:#1e4d8c;
+  --gold:#c9a84c;--gold-bright:#e8c96a;--gold-light:#f5e09a;
+  --silver:#a8b4c8;--bronze:#9a6b3a;
+  --white:#f0f4ff;--muted:rgba(240,244,255,0.5);--dim:rgba(240,244,255,0.25);
+  --red:#c0392b;--red-bg:rgba(192,57,43,0.13);
+  --green:#27ae60;--green-bg:rgba(39,174,96,0.1);
+  --border:rgba(201,168,76,0.2);
+}
+body{background:var(--navy);font-family:'Barlow',sans-serif;color:var(--white);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 15% 15%,rgba(26,58,107,0.5) 0%,transparent 50%),radial-gradient(circle at 85% 85%,rgba(26,58,107,0.4) 0%,transparent 50%),repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,0.012) 60px,rgba(255,255,255,0.012) 61px),repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,0.012) 60px,rgba(255,255,255,0.012) 61px);pointer-events:none;z-index:0}
 
-        :root {
-            --ucl-blue: #001035;
-            --ucl-gold: #c3a361;
-            --ucl-silver: #e2e2e2;
-            --ucl-bronze: #cd7f32;
-            --danger: #ff4b2b;
-            --ucl-gradient: linear-gradient(135deg, #001035 0%, #002d72 100%);
-        }
+/* ── LAYOUT ── */
+.app{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 1rem 5rem}
 
-        body {
-            background: var(--ucl-blue);
-            background-image: radial-gradient(circle at center, #002d72 0%, #001035 100%);
-            background-attachment: fixed;
-            color: #fff; font-family: 'Montserrat', sans-serif;
-            margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center;
-        }
+/* ── TOPBAR ── */
+.topbar{text-align:center;padding:1.8rem 0 0}
+.ucl-stars{display:block;font-size:10px;letter-spacing:12px;color:var(--gold);opacity:.5;margin-bottom:10px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;letter-spacing:8px;background:linear-gradient(180deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:8px;color:var(--silver);text-transform:uppercase}
+.gold-line{height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-bright),var(--gold),transparent);margin:14px 0}
 
-        .container { width: 100%; max-width: 1400px; }
-        header { text-align: center; padding: 25px 0; cursor: pointer; border-bottom: 2px solid var(--ucl-gold); margin-bottom: 25px; }
-        header h1 { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 2px; margin: 0; color: #fff; }
+/* ── TABS ── */
+.tabs{display:flex;gap:0;margin-bottom:2rem;border-bottom:2px solid var(--border);overflow-x:auto}
+.tab-btn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:12px 20px;background:transparent;border:none;color:var(--dim);cursor:pointer;transition:all .2s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab-btn:hover{color:var(--silver)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-panel{display:none}.tab-panel.active{display:block}
 
-        .tabs { display: flex; gap: 5px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap; }
-        .tab-btn {
-            background: rgba(255,255,255,0.05); color: var(--ucl-silver);
-            padding: 10px 15px; border-radius: 4px; border: 1px solid var(--ucl-gold);
-            cursor: pointer; font-family: 'Orbitron'; font-size: 0.6rem; transition: 0.3s; text-transform: uppercase;
-        }
-        .tab-btn.active { background: var(--ucl-gold); color: #000; font-weight: bold; box-shadow: 0 0 15px var(--ucl-gold); }
+/* ── SECTION TITLE ── */
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:4px;background:linear-gradient(90deg,var(--gold),var(--gold-bright));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:2rem 0 1rem}
+.sec-title span{position:relative;padding:0 1.4rem}
+.sec-title span::before,.sec-title span::after{content:'★';font-size:11px;color:var(--gold);-webkit-text-fill-color:var(--gold);position:absolute;top:50%;transform:translateY(-50%)}
+.sec-title span::before{left:0}.sec-title span::after{right:0}
 
-        .table-wrapper { background: rgba(0, 16, 53, 0.95); backdrop-filter: blur(10px); border-radius: 4px; padding: 15px; border: 1px solid rgba(195,163,97,0.2); overflow-x: auto; margin-bottom: 25px; }
-        table { width: 100%; border-collapse: collapse; min-width: 1200px; font-size: 0.85rem; }
-        th { padding: 12px; color: var(--ucl-gold); font-size: 0.65rem; text-transform: uppercase; border-bottom: 2px solid var(--ucl-gold); font-family: 'Orbitron'; background: rgba(0,0,0,0.2); }
-        td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
-        tr:hover { background: rgba(255,255,255,0.03); }
+/* ── CARD ── */
+.card{background:rgba(14,31,61,0.8);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.2rem}
+.card-header{background:linear-gradient(90deg,var(--navy-light),var(--blue));padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;color:var(--navy);background:var(--gold);padding:2px 10px;border-radius:2px}
 
-        .hall-box { background: var(--ucl-gradient); border: 2px solid var(--ucl-gold); border-radius: 15px; padding: 25px; margin-bottom: 40px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .hall-label { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--ucl-gold); color: #000; padding: 5px 20px; font-family: 'Orbitron'; font-weight: bold; border-radius: 20px; font-size: 0.8rem; }
-        
-        .podium-wrapper { display: flex; justify-content: space-around; align-items: flex-end; gap: 10px; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .podium-item { text-align: center; width: 120px; }
-        .podium-img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #444; object-fit: cover; margin-bottom: 10px; background: #000; }
-        .podium-1 .podium-img { width: 110px; height: 110px; border-color: var(--ucl-gold); box-shadow: 0 0 20px var(--ucl-gold); }
-        .podium-1 { order: 2; margin-bottom: 20px; }
-        .podium-2 { order: 1; }
-        .podium-3 { order: 3; }
-        
-        .lanterna-section { margin-top: 20px; text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px dashed var(--danger); }
-        .lanterna-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--danger); filter: grayscale(0.5); margin-bottom: 5px; }
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-family:'Barlow Condensed',sans-serif}
+.tbl thead tr{background:linear-gradient(90deg,var(--navy-light),var(--blue));border-bottom:2px solid var(--border)}
+.tbl th{padding:10px 10px;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--gold);text-transform:uppercase;text-align:center}
+.tbl th:first-child{text-align:left}
+.tbl tbody tr{border-bottom:1px solid rgba(255,255,255,0.05);transition:background .15s}
+.tbl tbody tr:hover{background:rgba(255,255,255,0.04)}
+.tbl tbody tr.first-row{background:rgba(201,168,76,0.07)}
+.tbl tbody tr.lanterna-row{background:var(--red-bg);border-left:3px solid var(--red)}
+.tbl td{padding:9px 10px;font-size:13px;color:rgba(255,255,255,0.8);text-align:center}
+.tbl td:first-child{text-align:left}
+.pos-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--dim);margin-right:6px}
+.pos-num.gold{color:var(--gold-bright)}
+.pos-num.red{color:var(--red)}
+.player-name{font-weight:700;font-size:14px;letter-spacing:1px;color:var(--white)}
+.player-name.red{color:#e88080}
+.pts-big{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.pts-big.red{color:var(--red)}
+.badge-sm{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:2px;margin-left:5px;text-transform:uppercase}
+.badge-gold{background:var(--gold);color:var(--navy)}
+.badge-red{background:var(--red);color:#fff}
+.sg-pos{color:#7ddb9a}.sg-neg{color:#e07070}
+.bar-wrap{display:flex;align-items:center;gap:6px}
+.bar-track{flex:1;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue-mid),var(--gold));border-radius:3px}
+.bar-fill.red-fill{background:linear-gradient(90deg,#7b1a1a,var(--red))}
+.bar-pct{font-size:11px;color:var(--dim);min-width:34px;text-align:right}
 
-        #admin { display: none; background: #000; padding: 20px; border: 2px solid var(--ucl-gold); border-radius: 8px; margin-bottom: 20px; }
-        input { background: #222; border: 1px solid #444; color: #fff; padding: 5px; border-radius: 3px; }
-    </style>
+/* ── SEASON SELECTOR ── */
+.season-select-wrap{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.season-btn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;padding:7px 18px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;text-transform:uppercase}
+.season-btn:hover{color:var(--silver)}
+.season-btn.active{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold)}
+
+/* ── ADMIN ── */
+.admin-lock{text-align:center;padding:3rem 1rem}
+.admin-lock h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:4px;color:var(--gold);margin-bottom:1rem}
+.admin-lock p{color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;margin-bottom:1.5rem}
+input[type=password],input[type=text],input[type=number],select{
+  background:rgba(14,31,61,0.9);border:1px solid var(--border);border-radius:6px;
+  color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:15px;
+  padding:10px 14px;outline:none;transition:border-color .2s;width:100%
+}
+input:focus,select:focus{border-color:var(--gold)}
+.btn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;border-radius:6px;border:none;cursor:pointer;transition:all .2s}
+.btn-gold{background:linear-gradient(90deg,var(--gold),var(--gold-bright));color:var(--navy)}
+.btn-gold:hover{opacity:.9;transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--silver)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{opacity:.85}
+.form-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:12px}
+.form-x{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--dim);text-align:center}
+.form-group{margin-bottom:14px}
+.form-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold);opacity:.7;text-transform:uppercase;display:block;margin-bottom:6px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.msg{font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:10px 14px;border-radius:6px;margin-top:10px}
+.msg-ok{background:var(--green-bg);border:1px solid var(--green);color:#7ddb9a}
+.msg-err{background:var(--red-bg);border:1px solid var(--red);color:#e07070}
+
+/* ── ANALYSIS ── */
+.analysis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.5rem}
+.analysis-card{background:rgba(14,31,61,0.8);border:1px solid var(--border);border-radius:10px;padding:1.2rem;text-align:center;position:relative;overflow:hidden}
+.analysis-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.analysis-icon{font-size:32px;margin-bottom:8px}
+.analysis-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;color:var(--gold);opacity:.7;text-transform:uppercase;margin-bottom:6px}
+.analysis-winner{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;background:linear-gradient(180deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.analysis-val{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--silver)}
+.analysis-card.red-card{border-color:rgba(192,57,43,0.4)}
+.analysis-card.red-card::before{background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.analysis-card.red-card .analysis-winner{background:linear-gradient(180deg,#e88080,var(--red));-webkit-background-clip:text;background-clip:text}
+
+/* ── CHAMPIONS STRIP ── */
+.champs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
+.champ-card{background:linear-gradient(160deg,rgba(201,168,76,0.1),rgba(201,168,76,0.03));border:1px solid rgba(201,168,76,0.35);border-radius:10px;padding:1.1rem 1rem;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
+.champ-card:hover{transform:translateY(-3px)}
+.champ-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-bright),var(--gold),transparent)}
+.champ-temp{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;color:var(--gold);opacity:.7;text-transform:uppercase;margin-bottom:6px}
+.champ-trophy{font-size:26px;margin-bottom:5px}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;background:linear-gradient(180deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:5px}
+.champ-pts{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--silver)}
+.champ-rec{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-bright);margin-top:4px}
+
+/* ── FOOTER ── */
+.footer{text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;color:var(--dim);text-transform:uppercase}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeUp .35s ease both}
+
+@media(max-width:640px){
+  .admin-grid{grid-template-columns:1fr}
+  .analysis-grid{grid-template-columns:repeat(2,1fr)}
+  .champs-grid{grid-template-columns:repeat(2,1fr)}
+  .logo{font-size:44px}
+  .tab-btn{padding:10px 14px;font-size:12px}
+}
+</style>
 </head>
 <body>
+<div class="app">
 
-<div class="container">
-    <header onclick="openAdmin()">
-        <h1>CENO<span>CUP</span> CHAMPIONS <span>LEGENDS</span></h1>
-        <div style="font-family:'Orbitron'; font-size:0.5rem; color:var(--ucl-gold); letter-spacing:5px;">V35.0 TOTAL ANALYTICS</div>
-    </header>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span class="ucl-stars">★ ★ ★ ★ ★ ★ ★ ★</span>
+    <div class="logo">CENOCUP</div>
+    <div class="logo-sub">FIFA 18 · PS4</div>
+    <div class="gold-line"></div>
+  </div>
 
-    <div id="admin">
-        <select id="admin-selector" onchange="renderEditor()" style="width:100%; margin-bottom:10px; padding:10px;"></select>
-        <div id="editor-container"></div>
-        <button onclick="addNewPlayer()" style="width:100%; margin:10px 0; padding:10px; background:transparent; color:var(--ucl-gold); border:1px solid var(--ucl-gold); cursor:pointer;">+ NOVO JOGADOR</button>
-        <div style="display:flex; gap:10px;">
-            <button onclick="saveAll()" style="flex:1; background:var(--ucl-gold); padding:15px; font-weight:bold; cursor:pointer;">SALVAR ALTERAÇÕES</button>
-            <button onclick="closeSeason()" style="flex:1; background:var(--danger); color:#fff; padding:15px; cursor:pointer;">ENCERRAR TEMPORADA</button>
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('geral')">Geral</button>
+    <button class="tab-btn" onclick="showTab('temporada')">Temporada</button>
+    <button class="tab-btn" onclick="showTab('hof')">Hall of Fame</button>
+    <button class="tab-btn" onclick="showTab('analises')">Análises</button>
+    <button class="tab-btn" onclick="showTab('admin')">⚙ Admin</button>
+  </div>
+
+  <!-- ═══════════════ GERAL ═══════════════ -->
+  <div id="tab-geral" class="tab-panel active">
+    <div class="sec-title" style="text-align:center"><span>Ranking Histórico Geral</span></div>
+    <div class="card">
+      <table class="tbl">
+        <thead><tr><th>Técnico</th><th>Temps</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GS</th><th>SG</th><th>Aprov.</th><th>PTS</th></tr></thead>
+        <tbody id="geral-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEMPORADA ═══════════════ -->
+  <div id="tab-temporada" class="tab-panel">
+    <div class="season-select-wrap" id="season-btns"></div>
+    <div id="season-content"></div>
+  </div>
+
+  <!-- ═══════════════ HALL OF FAME ═══════════════ -->
+  <div id="tab-hof" class="tab-panel">
+    <div class="sec-title" style="text-align:center"><span>Campeões</span></div>
+    <div class="champs-grid" id="champs-grid"></div>
+  </div>
+
+  <!-- ═══════════════ ANÁLISES ═══════════════ -->
+  <div id="tab-analises" class="tab-panel">
+    <div class="sec-title" style="text-align:center"><span>Análises Históricas</span></div>
+    <div class="analysis-grid" id="analysis-grid"></div>
+  </div>
+
+  <!-- ═══════════════ ADMIN ═══════════════ -->
+  <div id="tab-admin" class="tab-panel">
+    <div id="admin-lock" class="admin-lock">
+      <h2>🔒 Admin</h2>
+      <p>Digite a senha para acessar o painel de administração</p>
+      <div style="max-width:280px;margin:0 auto">
+        <input type="password" id="admin-pass" placeholder="Senha..." style="text-align:center;margin-bottom:10px">
+        <button class="btn btn-gold" style="width:100%" onclick="checkPass()">Entrar</button>
+        <div id="pass-err" class="msg msg-err" style="display:none">Senha incorreta</div>
+      </div>
+    </div>
+    <div id="admin-panel" style="display:none">
+      <div class="sec-title" style="text-align:center"><span>Painel Admin</span></div>
+      <div class="admin-grid">
+        <!-- Add Result -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">Registrar Partida</div></div>
+          <div style="padding:1.2rem">
+            <div class="form-group">
+              <label class="form-label">Temporada</label>
+              <select id="a-season"></select>
+            </div>
+            <div class="form-row">
+              <div>
+                <label class="form-label">Técnico A</label>
+                <select id="a-p1"></select>
+              </div>
+              <div style="padding-top:22px">
+                <div class="form-x">X</div>
+              </div>
+              <div>
+                <label class="form-label">Técnico B</label>
+                <select id="a-p2"></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div>
+                <label class="form-label">Gols A</label>
+                <input type="number" id="a-g1" min="0" value="0">
+              </div>
+              <div></div>
+              <div>
+                <label class="form-label">Gols B</label>
+                <input type="number" id="a-g2" min="0" value="0">
+              </div>
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="addResult()">Salvar Resultado</button>
+            <div id="result-msg" style="display:none"></div>
+          </div>
         </div>
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <button onclick="exportDB()" style="flex:0.5; background:#333; color:#fff; padding:10px;">BACKUP</button>
-            <button onclick="importDB()" style="flex:0.5; background:#333; color:#fff; padding:10px;">RESTAURAR</button>
+
+        <!-- Add Season -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">Nova Temporada</div></div>
+          <div style="padding:1.2rem">
+            <div class="form-group">
+              <label class="form-label">Nome da Temporada</label>
+              <input type="text" id="new-season-name" placeholder="Ex: Temp 5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jogadores (um por linha)</label>
+              <textarea id="new-season-players" style="background:rgba(14,31,61,0.9);border:1px solid var(--border);border-radius:6px;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:14px;padding:10px 14px;width:100%;height:120px;outline:none;resize:vertical" placeholder="MESSIAS&#10;LEVI&#10;YKARO..."></textarea>
+            </div>
+            <button class="btn btn-gold" style="width:100%" onclick="addSeason()">Criar Temporada</button>
+            <div id="season-msg" style="display:none"></div>
+          </div>
         </div>
-    </div>
 
-    <div class="tabs">
-        <button id="t-tab" class="tab-btn active" onclick="switchTab('tabela')">🏆 Tabela</button>
-        <button id="r-tab" class="tab-btn" onclick="switchTab('ranking')">👑 Ranking Geral</button>
-        <button id="m-tab" class="tab-btn" onclick="switchTab('medalhas')">🏅 Medalhas</button>
-        <button id="p-tab" class="tab-btn" onclick="switchTab('poder')">⚡ Força</button>
-        <button id="v-tab" class="tab-btn" onclick="switchTab('rivalidades')">⚔️ Rivais</button>
-        <button id="g-tab" class="tab-btn" onclick="switchTab('galeria')">🏛️ Hall da Fama</button>
+        <!-- Partidas registradas -->
+        <div class="card" style="grid-column:1/-1">
+          <div class="card-header">
+            <div class="card-title">Resultados Registrados</div>
+            <select id="filter-season-results" onchange="renderResultsList()" style="width:auto;font-size:12px;padding:4px 8px"></select>
+          </div>
+          <div style="padding:1rem" id="results-list"></div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div id="view-tabela">
-        <select id="season-view-selector" onchange="changeSeasonView(this.value)" style="width:100%; margin-bottom:15px; padding:12px; background:var(--ucl-blue); color:white; border:1px solid var(--ucl-gold);"></select>
-        <div class="table-wrapper"><table id="table-main"></table></div>
-    </div>
-
-    <div id="view-ranking" style="display:none">
-        <div class="table-wrapper"><table id="table-ranking"></table></div>
-    </div>
-
-    <div id="view-medalhas" style="display:none"><div class="table-wrapper"><table id="table-medalhas"></table></div></div>
-    <div id="view-poder" style="display:none"><div id="power-content" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:15px;"></div></div>
-    <div id="view-rivalidades" style="display:none"><div id="rival-content"></div></div>
-    <div id="view-galeria" style="display:none; flex-direction:column;"></div>
+  <div class="footer">★ &nbsp; CENOCUP · FIFA 18 · PS4 · Todos os direitos da rapaziada &nbsp; ★</div>
 </div>
 
 <script>
-    const STORAGE_KEY = 'cenocup_final_v35';
-    let db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { atual: [], historico: [] };
-    let currentSeasonView = 'atual';
+// ══════════════════════════════════════════
+// DATA STORE
+// ══════════════════════════════════════════
+const ADMIN_PASS = 'cenocup2024';
 
-    function openAdmin() { if(prompt("Acesso:") === '123') document.getElementById('admin').style.display='block'; }
+const DEFAULT_DATA = {
+  seasons: [
+    { id:1, name:'Temp 1', players:['MESSIAS','KAUAN','LEVI','YKARO','BE','YTALO'] },
+    { id:2, name:'Temp 2', players:['MESSIAS','RAMON','LEVI','YKARO','JESSE','YTALO'] },
+    { id:3, name:'Temp 3', players:['MESSIAS','KAUAN','LEVI','RAMON','JESSE','RONI','YTALO','YKARO'] },
+    { id:4, name:'Temp 4', players:['MESSIAS','LEVI','YKARO','RAMON','JESSE','RONI','BE','YTALO'] },
+    { id:5, name:'Temp 5', players:['MESSIAS','LEVI','YKARO','RAMON','JESSE','RONI','BE','YTALO'] },
+  ],
+  results: [
+    // TEMP 1
+    {s:1,a:'MESSIAS',b:'KAUAN',ga:2,gb:2},{s:1,a:'MESSIAS',b:'LEVI',ga:3,gb:0},{s:1,a:'MESSIAS',b:'YKARO',ga:2,gb:2},{s:1,a:'MESSIAS',b:'BE',ga:2,gb:2},{s:1,a:'MESSIAS',b:'YTALO',ga:2,gb:0},
+    {s:1,a:'KAUAN',b:'LEVI',ga:2,gb:2},{s:1,a:'KAUAN',b:'YKARO',ga:3,gb:2},{s:1,a:'KAUAN',b:'BE',ga:1,gb:1},{s:1,a:'KAUAN',b:'YTALO',ga:1,gb:1},
+    {s:1,a:'LEVI',b:'YKARO',ga:1,gb:1},{s:1,a:'LEVI',b:'BE',ga:1,gb:1},{s:1,a:'LEVI',b:'YTALO',ga:0,gb:0},
+    {s:1,a:'YKARO',b:'BE',ga:2,gb:0},{s:1,a:'YKARO',b:'YTALO',ga:1,gb:1},
+    {s:1,a:'BE',b:'YTALO',ga:0,gb:0},
+    // TEMP 2
+    {s:2,a:'MESSIAS',b:'RAMON',ga:2,gb:1},{s:2,a:'MESSIAS',b:'LEVI',ga:2,gb:2},{s:2,a:'MESSIAS',b:'YKARO',ga:2,gb:1},{s:2,a:'MESSIAS',b:'JESSE',ga:2,gb:1},{s:2,a:'MESSIAS',b:'YTALO',ga:2,gb:2},
+    {s:2,a:'RAMON',b:'LEVI',ga:3,gb:0},{s:2,a:'RAMON',b:'YKARO',ga:2,gb:2},{s:2,a:'RAMON',b:'JESSE',ga:1,gb:1},{s:2,a:'RAMON',b:'YTALO',ga:2,gb:2},
+    {s:2,a:'LEVI',b:'YKARO',ga:1,gb:1},{s:2,a:'LEVI',b:'JESSE',ga:1,gb:1},{s:2,a:'LEVI',b:'YTALO',ga:0,gb:0},
+    {s:2,a:'YKARO',b:'JESSE',ga:0,gb:0},{s:2,a:'YKARO',b:'YTALO',ga:1,gb:0},
+    {s:2,a:'JESSE',b:'YTALO',ga:0,gb:0},
+    // TEMP 3
+    {s:3,a:'MESSIAS',b:'KAUAN',ga:2,gb:1},{s:3,a:'MESSIAS',b:'LEVI',ga:3,gb:1},{s:3,a:'MESSIAS',b:'RAMON',ga:2,gb:2},{s:3,a:'MESSIAS',b:'JESSE',ga:2,gb:2},{s:3,a:'MESSIAS',b:'RONI',ga:2,gb:1},{s:3,a:'MESSIAS',b:'YTALO',ga:2,gb:1},{s:3,a:'MESSIAS',b:'YKARO',ga:1,gb:1},
+    {s:3,a:'KAUAN',b:'LEVI',ga:2,gb:1},{s:3,a:'KAUAN',b:'RAMON',ga:2,gb:2},{s:3,a:'KAUAN',b:'JESSE',ga:1,gb:1},{s:3,a:'KAUAN',b:'RONI',ga:2,gb:1},{s:3,a:'KAUAN',b:'YTALO',ga:1,gb:1},{s:3,a:'KAUAN',b:'YKARO',ga:1,gb:2},
+    {s:3,a:'LEVI',b:'RAMON',ga:2,gb:1},{s:3,a:'LEVI',b:'JESSE',ga:1,gb:1},{s:3,a:'LEVI',b:'RONI',ga:2,gb:1},{s:3,a:'LEVI',b:'YTALO',ga:2,gb:2},{s:3,a:'LEVI',b:'YKARO',ga:1,gb:2},
+    {s:3,a:'RAMON',b:'JESSE',ga:1,gb:1},{s:3,a:'RAMON',b:'RONI',ga:1,gb:1},{s:3,a:'RAMON',b:'YTALO',ga:1,gb:2},{s:3,a:'RAMON',b:'YKARO',ga:1,gb:1},
+    {s:3,a:'JESSE',b:'RONI',ga:1,gb:1},{s:3,a:'JESSE',b:'YTALO',ga:0,gb:0},{s:3,a:'JESSE',b:'YKARO',ga:1,gb:1},
+    {s:3,a:'RONI',b:'YTALO',ga:1,gb:2},{s:3,a:'RONI',b:'YKARO',ga:1,gb:1},
+    {s:3,a:'YTALO',b:'YKARO',ga:2,gb:1},
+    // TEMP 4
+    {s:4,a:'MESSIAS',b:'LEVI',ga:2,gb:2},{s:4,a:'MESSIAS',b:'YKARO',ga:2,gb:2},{s:4,a:'MESSIAS',b:'RAMON',ga:1,gb:1},{s:4,a:'MESSIAS',b:'JESSE',ga:2,gb:2},{s:4,a:'MESSIAS',b:'RONI',ga:2,gb:1},{s:4,a:'MESSIAS',b:'BE',ga:2,gb:1},{s:4,a:'MESSIAS',b:'YTALO',ga:1,gb:1},
+    {s:4,a:'LEVI',b:'YKARO',ga:2,gb:1},{s:4,a:'LEVI',b:'RAMON',ga:2,gb:1},{s:4,a:'LEVI',b:'JESSE',ga:2,gb:2},{s:4,a:'LEVI',b:'RONI',ga:2,gb:1},{s:4,a:'LEVI',b:'BE',ga:2,gb:1},{s:4,a:'LEVI',b:'YTALO',ga:1,gb:1},
+    {s:4,a:'YKARO',b:'RAMON',ga:1,gb:1},{s:4,a:'YKARO',b:'JESSE',ga:1,gb:1},{s:4,a:'YKARO',b:'RONI',ga:2,gb:2},{s:4,a:'YKARO',b:'BE',ga:2,gb:2},{s:4,a:'YKARO',b:'YTALO',ga:2,gb:2},
+    {s:4,a:'RAMON',b:'JESSE',ga:1,gb:1},{s:4,a:'RAMON',b:'RONI',ga:1,gb:1},{s:4,a:'RAMON',b:'BE',ga:2,gb:2},{s:4,a:'RAMON',b:'YTALO',ga:1,gb:1},
+    {s:4,a:'JESSE',b:'RONI',ga:1,gb:1},{s:4,a:'JESSE',b:'BE',ga:1,gb:1},{s:4,a:'JESSE',b:'YTALO',ga:1,gb:1},
+    {s:4,a:'RONI',b:'BE',ga:1,gb:1},{s:4,a:'RONI',b:'YTALO',ga:1,gb:1},
+    {s:4,a:'BE',b:'YTALO',ga:1,gb:1},
+  ]
+};
 
-    function switchTab(mode) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        ['view-tabela', 'view-ranking', 'view-medalhas', 'view-poder', 'view-rivalidades', 'view-galeria'].forEach(v => document.getElementById(v).style.display = 'none');
-        document.getElementById('view-' + mode).style.display = (mode === 'galeria') ? 'flex' : 'block';
-        document.getElementById(mode.charAt(0)+'-tab').classList.add('active');
-        window['render' + mode.charAt(0).toUpperCase() + mode.slice(1)]?.();
-    }
+function loadData(){
+  try{const s=localStorage.getItem('cenocup_data');return s?JSON.parse(s):JSON.parse(JSON.stringify(DEFAULT_DATA))}
+  catch{return JSON.parse(JSON.stringify(DEFAULT_DATA))}
+}
+function saveData(d){localStorage.setItem('cenocup_data',JSON.stringify(d))}
+let DB = loadData();
 
-    const calcF = (gp, gc) => parseFloat(((gp * 3.5) - (gc * 2.5)).toFixed(1));
-    const calcApr = (v, e, d) => { let t = (v + e + d) * 3; return t > 0 ? (((v*3)+e)/t*100).toFixed(1) : "0.0"; };
+// ══════════════════════════════════════════
+// COMPUTE STANDINGS
+// ══════════════════════════════════════════
+function computeStandings(seasonId){
+  const season = DB.seasons.find(s=>s.id===seasonId);
+  if(!season) return [];
+  const stats = {};
+  season.players.forEach(p=>{ stats[p]={name:p,j:0,v:0,e:0,d:0,gp:0,gs:0,sg:0,pts:0}; });
+  DB.results.filter(r=>r.s===seasonId).forEach(r=>{
+    if(!stats[r.a]) stats[r.a]={name:r.a,j:0,v:0,e:0,d:0,gp:0,gs:0,sg:0,pts:0};
+    if(!stats[r.b]) stats[r.b]={name:r.b,j:0,v:0,e:0,d:0,gp:0,gs:0,sg:0,pts:0};
+    const a=stats[r.a],b=stats[r.b];
+    a.j++;b.j++;a.gp+=r.ga;a.gs+=r.gb;b.gp+=r.gb;b.gs+=r.ga;
+    a.sg+=r.ga-r.gb;b.sg+=r.gb-r.ga;
+    if(r.ga>r.gb){a.v++;a.pts+=3;b.d++;}
+    else if(r.ga<r.gb){b.v++;b.pts+=3;a.d++;}
+    else{a.e++;b.e++;a.pts++;b.pts++;}
+  });
+  return Object.values(stats).sort((a,b)=>b.pts-a.pts||b.sg-a.sg||b.gp-a.gp);
+}
 
-    function renderTabela() {
-        const sel = document.getElementById('season-view-selector');
-        sel.innerHTML = '<option value="atual">⭐ ÉPOCA ATUAL</option>';
-        db.historico.forEach((h, i) => sel.innerHTML += `<option value="${i}">📂 ${h.nome}</option>`);
-        sel.value = currentSeasonView;
-        let list = currentSeasonView === 'atual' ? [...db.atual] : [...db.historico[currentSeasonView].dados];
-        list.sort((a,b) => ((b.v*3)+b.e) - ((a.v*3)+a.e) || (b.gp-b.gc) - (a.gp-a.gc));
-        document.getElementById('table-main').innerHTML = `<thead><tr><th>#</th><th style="text-align:left">TÉCNICO</th><th>J</th><th>PTS</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GS</th><th>SG</th><th>FORÇA</th></tr></thead>
-        <tbody>${list.map((j, i) => `<tr><td style="color:var(--ucl-gold); font-family:Orbitron;">${i+1}º</td><td style="text-align:left"><b>${j.tecnico}</b></td><td>${j.v+j.e+(j.d||0)}</td><td style="font-weight:bold; color:var(--ucl-gold)">${(j.v*3)+j.e}</td><td>${j.v}</td><td>${j.e}</td><td>${j.d||0}</td><td>${j.gp}</td><td>${j.gc}</td><td>${j.gp-j.gc}</td><td>${calcF(j.gp,j.gc)}</td></tr>`).join('')}</tbody>`;
-    }
+function computeGeneral(){
+  const stats={};
+  DB.seasons.forEach(season=>{
+    season.players.forEach(p=>{
+      if(!stats[p]) stats[p]={name:p,temps:0,j:0,v:0,e:0,d:0,gp:0,gs:0,sg:0,pts:0,titles:0,top3:0,lanternas:0};
+      stats[p].temps++;
+    });
+  });
+  DB.results.forEach(r=>{
+    [r.a,r.b].forEach(p=>{if(!stats[p])stats[p]={name:p,temps:0,j:0,v:0,e:0,d:0,gp:0,gs:0,sg:0,pts:0,titles:0,top3:0,lanternas:0}});
+    const a=stats[r.a],b=stats[r.b];
+    a.j++;b.j++;a.gp+=r.ga;a.gs+=r.gb;b.gp+=r.gb;b.gs+=r.ga;
+    a.sg+=r.ga-r.gb;b.sg+=r.gb-r.ga;
+    if(r.ga>r.gb){a.v++;a.pts+=3;b.d++;}
+    else if(r.ga<r.gb){b.v++;b.pts+=3;a.d++;}
+    else{a.e++;b.e++;a.pts++;b.pts++;}
+  });
+  // titles, top3, lanternas
+  DB.seasons.forEach(s=>{
+    const st=computeStandings(s.id);
+    if(st.length>0&&stats[st[0].name]){stats[st[0].name].titles++;}
+    st.slice(0,3).forEach(p=>{if(stats[p.name])stats[p.name].top3++;});
+    if(st.length>0&&stats[st[st.length-1].name]){stats[st[st.length-1].name].lanternas++;}
+  });
+  return Object.values(stats).sort((a,b)=>b.pts-a.pts||b.sg-a.sg||b.gp-a.gp);
+}
 
-    function renderRanking() {
-        let s = {};
-        const proc = (l) => l.forEach(j => {
-            if(!s[j.tecnico]) s[j.tecnico] = { t:j.tecnico, part:0, j:0, v:0, e:0, d:0, gp:0, gc:0, pts:0, f:0 };
-            let x = s[j.tecnico]; x.part++; x.j += (j.v+j.e+(j.d||0)); x.v += j.v; x.e += j.e; x.d += (j.d||0);
-            x.gp += j.gp; x.gc += j.gc; x.pts += (j.v*3)+j.e; x.f += calcF(j.gp, j.gc);
-        });
-        db.historico.forEach(h => proc(h.dados)); proc(db.atual);
-        let sorted = Object.values(s).sort((a,b) => b.pts - a.pts || b.f - a.f);
-        document.getElementById('table-ranking').innerHTML = `<thead><tr><th>#</th><th style="text-align:left">TÉCNICO</th><th>PART</th><th>APR%</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GF</th><th>GS</th><th>SG</th><th>PTS</th><th>FORÇA</th></tr></thead>
-        <tbody>${sorted.map((j, i) => `<tr><td>${i+1}</td><td style="text-align:left"><b>${j.t}</b></td><td>${j.part}</td><td>${calcApr(j.v,j.e,j.d)}%</td><td>${j.j}</td><td>${j.v}</td><td style="color:var(--neon-blue)">${j.e}</td><td>${j.d}</td><td>${j.gp}</td><td>${j.gc}</td><td>${j.gp-j.gc}</td><td style="font-weight:bold">${j.pts}</td><td style="color:var(--ucl-gold)">${j.f.toFixed(1)}</td></tr>`).join('')}</tbody>`;
-    }
+// ══════════════════════════════════════════
+// RENDER GENERAL
+// ══════════════════════════════════════════
+function renderGeral(){
+  const rows=computeGeneral();
+  const lastIdx=rows.length-1;
+  const tbody=document.getElementById('geral-body');
+  tbody.innerHTML='';
+  rows.forEach((p,i)=>{
+    const isFirst=i===0,isLast=i===lastIdx;
+    const aprov=p.j?Math.round((p.pts/(p.j*3))*100):0;
+    const sg=p.sg>0?`<span class="sg-pos">+${p.sg}</span>`:p.sg<0?`<span class="sg-neg">${p.sg}</span>`:'0';
+    const stars=p.titles>0?`<span class="badge-sm badge-gold">${p.titles}★</span>`:'';
+    const lantTag=isLast?`<span class="badge-sm badge-red">Lanterna</span>`:'';
+    tbody.innerHTML+=`<tr class="${isFirst?'first-row':''} ${isLast?'lanterna-row':''}">
+      <td><span class="pos-num ${isFirst?'gold':''} ${isLast?'red':''}">${i+1}</span><span class="player-name ${isLast?'red':''}">${p.name}</span>${stars}${lantTag}</td>
+      <td>${p.temps}</td><td>${p.j}</td><td>${p.v}</td><td>${p.e}</td><td>${p.d}</td><td>${p.gp}</td><td>${p.gs}</td><td>${sg}</td>
+      <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill ${isLast?'red-fill':''}" style="width:${aprov}%"></div></div><div class="bar-pct">${aprov}%</div></div></td>
+      <td><span class="pts-big ${isLast?'red':''}">${p.pts}</span></td>
+    </tr>`;
+  });
+}
 
-    function renderMedalhas() {
-        let m = {};
-        db.historico.forEach(h => {
-            h.dados.forEach((j, idx) => {
-                if(!m[j.tecnico]) m[j.tecnico] = { t:j.tecnico, g:0, s:0, b:0, p:0 };
-                if(idx === 0) m[j.tecnico].g++;
-                else if(idx === 1) m[j.tecnico].s++;
-                else if(idx === 2) m[j.tecnico].b++;
-                if(idx === h.dados.length - 1) m[j.tecnico].p++;
-            });
-        });
-        let sorted = Object.values(m).sort((a,b) => b.g - a.g || b.s - a.s || b.b - a.b);
-        document.getElementById('table-medalhas').innerHTML = `<thead><tr><th>#</th><th style="text-align:left">TÉCNICO</th><th>🥇 OURO</th><th>🥈 PRATA</th><th>🥉 BRONZE</th><th>💩 LANTERNA</th></tr></thead>
-        <tbody>${sorted.map((j, i) => `<tr><td>${i+1}º</td><td style="text-align:left"><b>${j.t}</b></td><td>${j.g}</td><td>${j.s}</td><td>${j.b}</td><td style="color:var(--danger)">${j.p}</td></tr>`).join('')}</tbody>`;
-    }
+// ══════════════════════════════════════════
+// RENDER SEASON
+// ══════════════════════════════════════════
+let currentSeason=DB.seasons[DB.seasons.length-1]?.id||1;
 
-    function renderPoder() {
-        let players = {};
-        const proc = (l, n) => l.forEach(j => {
-            if(!players[j.tecnico]) players[j.tecnico] = [];
-            players[j.tecnico].push({ epoca: n, forca: calcF(j.gp, j.gc) });
-        });
-        db.historico.forEach(h => proc(h.dados, h.nome)); proc(db.atual, "Atual");
-        document.getElementById('power-content').innerHTML = Object.keys(players).map(p => {
-            let pData = players[p];
-            let maxP = Math.max(...pData.map(d => d.forca));
-            return `<div style="background:rgba(255,255,255,0.03); border:1px solid rgba(195,163,97,0.2); border-radius:8px; padding:15px;">
-                <div style="font-family:'Orbitron'; color:var(--ucl-gold); margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px;">${p}</div>
-                ${pData.map(d => `<div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:3px 0;"><span>${d.epoca}</span><span style="font-weight:bold; color:${d.forca===maxP?'#00ff87':(d.forca<0?'#ff4b2b':'#fff')}">${d.forca}</span></div>`).join('')}
-            </div>`;
-        }).join('');
-    }
+function renderSeasonBtns(){
+  const wrap=document.getElementById('season-btns');
+  wrap.innerHTML='';
+  DB.seasons.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='season-btn'+(s.id===currentSeason?' active':'');
+    b.textContent=s.name;
+    b.onclick=()=>{currentSeason=s.id;renderSeasonBtns();renderSeasonTable();};
+    wrap.appendChild(b);
+  });
+}
 
-    function renderRivalidades() {
-        let s = {};
-        [...db.historico.flatMap(h => h.dados), ...db.atual].forEach(j => {
-            if(!s[j.tecnico]) s[j.tecnico] = { t:j.tecnico, f:0, c:0 };
-            s[j.tecnico].f += calcF(j.gp, j.gc); s[j.tecnico].c++;
-        });
-        let arr = Object.values(s).map(x => ({ t: x.t, m: x.f / x.c }));
-        let html = "", used = new Set();
-        arr.sort((a,b) => b.m - a.m).forEach(p => {
-            if(used.has(p.t)) return;
-            let riv = arr.filter(r => r.t !== p.t && !used.has(r.t)).sort((a,b) => Math.abs(a.m - p.m) - Math.abs(b.m - p.m))[0];
-            if(riv) {
-                used.add(p.t); used.add(riv.t);
-                html += `<div style="display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; gap:20px; padding:15px; background:rgba(255,255,255,0.03); margin-bottom:8px; border-radius:8px; border:1px solid rgba(195,163,97,0.1);">
-                    <div style="text-align:right"><b>${p.t}</b><br><small>Level: ${p.m.toFixed(1)}</small></div>
-                    <div style="font-family:Cinzel; color:var(--ucl-gold); font-size:1.2rem;">VS</div>
-                    <div style="text-align:left"><b>${riv.t}</b><br><small>Level: ${riv.m.toFixed(1)}</small></div>
-                </div>`;
-            }
-        });
-        document.getElementById('rival-content').innerHTML = html;
-    }
+function renderSeasonTable(){
+  const rows=computeStandings(currentSeason);
+  const lastIdx=rows.length-1;
+  const season=DB.seasons.find(s=>s.id===currentSeason);
+  let html=`<div class="card fade">
+    <div class="card-header"><div class="card-title">${season?.name||''}</div><div class="card-badge">${rows.length} técnicos</div></div>
+    <table class="tbl">
+      <thead><tr><th>Técnico</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GS</th><th>SG</th><th>Aprov.</th><th>PTS</th></tr></thead>
+      <tbody>`;
+  rows.forEach((p,i)=>{
+    const isFirst=i===0,isLast=i===lastIdx;
+    const aprov=p.j?Math.round((p.pts/(p.j*3))*100):0;
+    const sg=p.sg>0?`<span class="sg-pos">+${p.sg}</span>`:p.sg<0?`<span class="sg-neg">${p.sg}</span>`:'0';
+    const lantTag=isLast?`<span class="badge-sm badge-red">Lanterna</span>`:'';
+    const champTag=isFirst?`<span class="badge-sm badge-gold">Líder</span>`:'';
+    html+=`<tr class="${isFirst?'first-row':''} ${isLast?'lanterna-row':''}">
+      <td><span class="pos-num ${isFirst?'gold':''} ${isLast?'red':''}">${i+1}</span><span class="player-name ${isLast?'red':''}">${p.name}</span>${champTag}${lantTag}</td>
+      <td>${p.j}</td><td>${p.v}</td><td>${p.e}</td><td>${p.d}</td><td>${p.gp}</td><td>${p.gs}</td><td>${sg}</td>
+      <td><div class="bar-wrap"><div class="bar-track"><div class="bar-fill ${isLast?'red-fill':''}" style="width:${aprov}%"></div></div><div class="bar-pct">${aprov}%</div></div></td>
+      <td><span class="pts-big ${isLast?'red':''}">${p.pts}</span></td>
+    </tr>`;
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('season-content').innerHTML=html;
+}
 
-    function renderGaleria() {
-        const gal = document.getElementById('view-galeria');
-        gal.innerHTML = db.historico.slice().reverse().map(h => {
-            const l = h.dados[h.dados.length-1];
-            return `
-            <div class="hall-box">
-                <div class="hall-label">${h.nome.toUpperCase()}</div>
-                <div class="podium-wrapper">
-                    <div class="podium-item podium-2">
-                        <img src="${h.dados[1]?h.dados[1].foto:''}" class="podium-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/166/166120.png'"><br>
-                        <small>🥈 PRATA</small><br><b>${h.dados[1]?h.dados[1].tecnico:'-'}</b>
-                    </div>
-                    <div class="podium-item podium-1">
-                        <img src="${h.dados[0].foto}" class="podium-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/166/166120.png'"><br>
-                        <span style="font-size:1.2rem;">🏆 CAMPEÃO</span><br><b style="color:var(--ucl-gold)">${h.dados[0].tecnico}</b>
-                    </div>
-                    <div class="podium-item podium-3">
-                        <img src="${h.dados[2]?h.dados[2].foto:''}" class="podium-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/166/166120.png'"><br>
-                        <small>🥉 BRONZE</small><br><b>${h.dados[2]?h.dados[2].tecnico:'-'}</b>
-                    </div>
-                </div>
-                <div class="lanterna-section">
-                    <img src="${l.foto}" class="lanterna-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/166/166120.png'"><br>
-                    <b style="color:var(--danger)">💩 LANTERNA (Troféu Cocô)</b><br>
-                    <span>${l.tecnico}</span>
-                </div>
-            </div>`;
-        }).join('');
-    }
+// ══════════════════════════════════════════
+// RENDER HALL OF FAME
+// ══════════════════════════════════════════
+function renderHoF(){
+  const grid=document.getElementById('champs-grid');
+  grid.innerHTML='';
+  DB.seasons.forEach((s,i)=>{
+    const st=computeStandings(s.id);
+    if(!st.length) return;
+    const champ=st[0];
+    const inv=champ.d===0?'Invicto':'';
+    grid.innerHTML+=`<div class="champ-card" style="animation-delay:${i*.08}s">
+      <div class="champ-temp">${s.name}</div>
+      <div class="champ-trophy">🥇</div>
+      <div class="champ-name">${champ.name}</div>
+      <div class="champ-pts">${champ.pts} pts · ${champ.v}V ${champ.e}E ${champ.d}D</div>
+      ${inv?`<div class="champ-rec">${inv}</div>`:''}
+    </div>`;
+  });
+}
 
-    function renderEditor() {
-        const m = document.getElementById('admin-selector').value;
-        const target = m === 'atual' ? db.atual : db.historico[m].dados;
-        document.getElementById('editor-container').innerHTML = target.map((j, i) => `
-            <div style="display:flex; gap:5px; margin-bottom:5px; background:#111; padding:5px; border-radius:4px; flex-wrap:wrap;">
-                <input style="width:110px" type="text" value="${j.tecnico}" onchange="upd('${m}',${i},'tecnico',this.value)">
-                V<input type="number" style="width:35px" value="${j.v}" onchange="upd('${m}',${i},'v',parseInt(this.value))">
-                E<input type="number" style="width:35px" value="${j.e}" onchange="upd('${m}',${i},'e',parseInt(this.value))">
-                D<input type="number" style="width:35px" value="${j.d||0}" onchange="upd('${m}',${i},'d',parseInt(this.value))">
-                GP<input type="number" style="width:40px" value="${j.gp}" onchange="upd('${m}',${i},'gp',parseInt(this.value))">
-                GS<input type="number" style="width:40px" value="${j.gc}" onchange="upd('${m}',${i},'gc',parseInt(this.value))">
-                <input style="flex:1" type="text" value="${j.foto||''}" placeholder="Foto" onchange="upd('${m}',${i},'foto',this.value)">
-                <button onclick="db.atual.splice(${i},1);renderEditor()">✕</button>
-            </div>`).join('');
-    }
+// ══════════════════════════════════════════
+// RENDER ANALYSES
+// ══════════════════════════════════════════
+function renderAnalises(){
+  const rows=computeGeneral();
+  if(!rows.length) return;
+  const grid=document.getElementById('analysis-grid');
 
-    function upd(m, idx, f, v) { if(m==='atual') db.atual[idx][f]=v; else db.historico[m].dados[idx][f]=v; }
-    function saveAll() { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); alert("Dados Sincronizados!"); location.reload(); }
-    function addNewPlayer() { db.atual.push({tecnico:"Novo", v:0, e:0, d:0, gp:0, gc:0, foto:""}); renderEditor(); }
-    function changeSeasonView(v) { currentSeasonView = v; renderTabela(); }
-    function exportDB() { const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db)); a.download = `CenoCup_Backup.json`; a.click(); }
-    function importDB() { const inp = document.createElement('input'); inp.type = 'file'; inp.onchange = e => { const r = new FileReader(); r.readAsText(e.target.files[0]); r.onload = ev => { db = JSON.parse(ev.target.result); saveAll(); }; }; inp.click(); }
-    function closeSeason() {
-        let n = prompt("Nome da Época:");
-        if(n && db.atual.length) {
-            db.atual.sort((a,b) => ((b.v*3)+b.e) - ((a.v*3)+a.e) || (b.gp-b.gc) - (a.gp-a.gc));
-            db.historico.push({ nome: n, dados: JSON.parse(JSON.stringify(db.atual)) });
-            db.atual = db.atual.map(j => ({...j, v:0, e:0, d:0, gp:0, gc:0}));
-            saveAll();
-        }
-    }
+  const best=(arr,key,label,icon,fmt,isRed=false)=>{
+    const sorted=[...arr].sort((a,b)=>b[key]-a[key]);
+    const w=sorted[0];
+    return `<div class="analysis-card ${isRed?'red-card':''}">
+      <div class="analysis-icon">${icon}</div>
+      <div class="analysis-label">${label}</div>
+      <div class="analysis-winner">${w.name}</div>
+      <div class="analysis-val">${fmt(w)}</div>
+    </div>`;
+  };
+  const worst=(arr,key,label,icon,fmt)=>{
+    const sorted=[...arr].sort((a,b)=>a[key]-b[key]);
+    const w=sorted[0];
+    return `<div class="analysis-card red-card">
+      <div class="analysis-icon">${icon}</div>
+      <div class="analysis-label">${label}</div>
+      <div class="analysis-winner">${w.name}</div>
+      <div class="analysis-val">${fmt(w)}</div>
+    </div>`;
+  };
 
-    const adminSel = document.getElementById('admin-selector');
-    adminSel.innerHTML = '<option value="atual">Temporada Atual</option>';
-    db.historico.forEach((h, i) => adminSel.innerHTML += `<option value="${i}">${h.nome}</option>`);
-    renderTabela();
+  const pgj=r=>r.j?(r.gp/r.j).toFixed(2):0;
+  const gsjr=r=>r.j?(r.gs/r.j).toFixed(2):0;
+  const aprov=r=>r.j?Math.round((r.pts/(r.j*3))*100)+'%':'0%';
+
+  grid.innerHTML=
+    best(rows,'gp','Melhor Ataque','⚽',r=>`${r.gp} gols (${pgj(r)}/jogo)`)+
+    worst(rows,'gs','Melhor Defesa','🛡️',r=>`${r.gs} gols sofridos`)+
+    worst(rows,'d','Menos Derrotas','💪',r=>`${r.d} derrotas`)+
+    best(rows,'titles','Mais Títulos','🏆',r=>`${r.titles} título${r.titles!==1?'s':''}`)+
+    best(rows,'top3','Mais Top 3','🥇',r=>`${r.top3} vezes no pódio`)+
+    best(rows,'lanternas','Mais Rebaixamentos','🔴',r=>`${r.lanternas} lanterna${r.lanternas!==1?'s':''}`,true)+
+    best(rows,'pts','Mais Pontos','📊',r=>`${r.pts} pts (${aprov(r)})`)+
+    best(rows,'sg','Maior Saldo','📈',r=>`SG +${r.sg}`)+
+    worst(rows,'sg','Menor Saldo','📉',r=>`SG ${r.sg}`);
+}
+
+// ══════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════
+function checkPass(){
+  const v=document.getElementById('admin-pass').value;
+  if(v===ADMIN_PASS){
+    document.getElementById('admin-lock').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    populateAdminSelects();
+    renderResultsList();
+  } else {
+    document.getElementById('pass-err').style.display='block';
+    setTimeout(()=>document.getElementById('pass-err').style.display='none',2000);
+  }
+}
+
+function populateAdminSelects(){
+  const aSeason=document.getElementById('a-season');
+  const filterSeason=document.getElementById('filter-season-results');
+  aSeason.innerHTML='';filterSeason.innerHTML='';
+  DB.seasons.forEach(s=>{
+    aSeason.innerHTML+=`<option value="${s.id}">${s.name}</option>`;
+    filterSeason.innerHTML+=`<option value="${s.id}">${s.name}</option>`;
+  });
+  filterSeason.value=DB.seasons[DB.seasons.length-1]?.id||1;
+  populatePlayerSelects();
+  aSeason.addEventListener('change',populatePlayerSelects);
+}
+
+function populatePlayerSelects(){
+  const sid=parseInt(document.getElementById('a-season').value);
+  const season=DB.seasons.find(s=>s.id===sid);
+  const players=season?.players||[];
+  ['a-p1','a-p2'].forEach(id=>{
+    const sel=document.getElementById(id);
+    sel.innerHTML=players.map(p=>`<option value="${p}">${p}</option>`).join('');
+  });
+  document.getElementById('a-p2').selectedIndex=1;
+}
+
+function addResult(){
+  const sid=parseInt(document.getElementById('a-season').value);
+  const p1=document.getElementById('a-p1').value;
+  const p2=document.getElementById('a-p2').value;
+  const g1=parseInt(document.getElementById('a-g1').value)||0;
+  const g2=parseInt(document.getElementById('a-g2').value)||0;
+  const msg=document.getElementById('result-msg');
+  if(p1===p2){showMsg(msg,'Selecione técnicos diferentes!','err');return;}
+  DB.results.push({s:sid,a:p1,b:p2,ga:g1,gb:g2});
+  saveData(DB);
+  renderAll();
+  renderResultsList();
+  showMsg(msg,`✔ ${p1} ${g1} x ${g2} ${p2} salvo!`,'ok');
+  document.getElementById('a-g1').value=0;
+  document.getElementById('a-g2').value=0;
+}
+
+function addSeason(){
+  const name=document.getElementById('new-season-name').value.trim();
+  const playersRaw=document.getElementById('new-season-players').value.trim();
+  const msg=document.getElementById('season-msg');
+  if(!name||!playersRaw){showMsg(msg,'Preencha todos os campos!','err');return;}
+  const players=playersRaw.split('\n').map(p=>p.trim().toUpperCase()).filter(Boolean);
+  if(players.length<2){showMsg(msg,'Mínimo 2 jogadores!','err');return;}
+  const newId=Math.max(...DB.seasons.map(s=>s.id))+1;
+  DB.seasons.push({id:newId,name,players});
+  saveData(DB);
+  document.getElementById('new-season-name').value='';
+  document.getElementById('new-season-players').value='';
+  populateAdminSelects();
+  renderSeasonBtns();
+  renderHoF();
+  showMsg(msg,`✔ ${name} criada!`,'ok');
+}
+
+function deleteResult(idx){
+  if(!confirm('Remover este resultado?')) return;
+  DB.results.splice(idx,1);
+  saveData(DB);
+  renderAll();
+  renderResultsList();
+}
+
+function renderResultsList(){
+  const sid=parseInt(document.getElementById('filter-season-results')?.value);
+  const list=document.getElementById('results-list');
+  if(!list) return;
+  const filtered=DB.results.map((r,i)=>({...r,_i:i})).filter(r=>r.s===sid);
+  if(!filtered.length){list.innerHTML=`<p style="color:var(--dim);font-family:'Barlow Condensed',sans-serif;font-size:13px;text-align:center;padding:1rem">Nenhuma partida registrada</p>`;return;}
+  list.innerHTML=filtered.map(r=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-family:'Barlow Condensed',sans-serif;font-size:14px">
+      <span style="flex:1;text-align:right;color:var(--white);font-weight:700">${r.a}</span>
+      <span style="padding:0 12px;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold)">${r.ga} x ${r.gb}</span>
+      <span style="flex:1;color:var(--white);font-weight:700">${r.b}</span>
+      <button onclick="deleteResult(${r._i})" style="background:transparent;border:none;color:var(--red);cursor:pointer;font-size:16px;padding:2px 8px" title="Remover">✕</button>
+    </div>`).join('');
+}
+
+function showMsg(el,text,type='ok'){
+  el.textContent=text;
+  el.className=`msg msg-${type}`;
+  el.style.display='block';
+  setTimeout(()=>el.style.display='none',3000);
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function showTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+  if(id==='temporada'){renderSeasonBtns();renderSeasonTable();}
+  if(id==='analises') renderAnalises();
+  if(id==='hof') renderHoF();
+}
+
+function renderAll(){
+  renderGeral();
+  renderSeasonBtns();
+  renderSeasonTable();
+  renderHoF();
+  renderAnalises();
+}
+
+// ── INIT ──
+renderGeral();
+renderSeasonBtns();
+renderSeasonTable();
+renderHoF();
+renderAnalises();
 </script>
 </body>
 </html>
